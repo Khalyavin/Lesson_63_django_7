@@ -1,0 +1,34 @@
+{% extends 'product/base.html' %}
+
+{% block content %}
+    <title>{{ object.name }}</title>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <td>Заголовок</td>
+                        <td>{{ object.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Характеристики</td>
+                        <td>{{ object.description|truncatechars:500 }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Фото</td>
+                        <img src="/media/{{ object.photo }}" width=100 alt=""/>
+                    </tr>
+                    <tr>
+                        <td>Цена</td>
+                        <td>{{ object.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>Дата публикации</td>
+                        <td>{{ object.date_org }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

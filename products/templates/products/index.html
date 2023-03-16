@@ -1,0 +1,43 @@
+{% extends 'products/base.html' %}
+
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Номе page</title>
+</head>
+
+    <table class="table table-dark table-striped">
+        <thead>
+        <tr>
+            <td>Наименование</td>
+            <td>Описание</td>
+            <td>Фото</td>
+            <td>Цена</td>
+            <td>Дата создания</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for object in object_list %}
+            <tr>
+{#                        <td>#}
+{#                            <a class="btn btn-outline-success w-75" href="{% url 'product:detail' object.pk %}">#{{ object.pk }}</a>#}
+{#                        </td>#}
+                <td>{{ object.name }}</td>
+                <td>{{ object.description|truncatechars:100 }}</td>
+                <td>
+                    <img src="/media/{{ object.photo }}" width=100 alt=""/>
+                </td>
+                <td>{{ object.price }}</td>
+                <td>{{ object.date_org|date:"d.m.Y" }}</td>
+{#                        <td>#}
+{#                            <a class="btn btn-info w-75" href="{% url 'product:update' object.pk %}">Update</a>#}
+{#                            <a class="btn btn-danger w-75" href="{% url 'product:delete' object.pk %}">Delete</a>#}
+{#                        </td>#}
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
