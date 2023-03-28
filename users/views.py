@@ -9,9 +9,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import UpdateView, CreateView, TemplateView
+from django.views.generic import UpdateView, CreateView, TemplateView, FormView
 
-from users.forms import CustomUserChangeForm, SignupForm, UserPasswordResetForm
+from users.forms import CustomUserChangeForm, SignupForm, UserPasswordResetEmailForm
 from users.models import User
 from users.service import set_verify_token_and_send_mail, generate_password_and_send_mail
 
@@ -67,18 +67,19 @@ def verify_email(request, token):
     return render(request, 'users/verify_failed.html')
 
 
-class UserPasswordGenerateView(CreateView):
-    template_name = 'users/password_reset_email.html'
+class UserPasswordGenerateView(FormView):
     model = User
-    form_class = UserPasswordResetForm
+    form_class = UserPasswordResetEmailForm
+    template_name = 'users/password_reset_email.html'
     success_url = reverse_lazy('users:reset_success')
 
     def form_valid(self, form):
+        print(dir(form))
         if form.is_valid():
-            tmp_email = form.email
+            tmp_email = form.cleaned_data["email"]
             tmp_user = User.objects.get(email=tmp_email)
-            generate_password_and_send_mail(self.object)
-            self.object.save()
+            generate_password_and_send_mail(tmp_user)
+            tmp_user.save()
 
         return super().form_valid(form)
 
